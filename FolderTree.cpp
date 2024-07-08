@@ -14,13 +14,13 @@
 //  Reparse points are utterly undocumented in Win2K, but can wreak havoc
 //  in SpaceMonger.  We try hard to deal with them anyway.
 
-#if (_WIN32_WINNT < 0x500)
 
 //  Maximum reparse buffer info size. The max user defined reparse
 //  data is 16KB, plus there's a header.
 //
 #define MAX_REPARSE_SIZE	17000
 
+#if (_WIN32_WINNT < 0x500)
 //  Undocumented FSCTL_SET_REPARSE_POINT structure definition
 #define REPARSE_MOUNTPOINT_HEADER_SIZE   8
 typedef struct {
@@ -441,7 +441,7 @@ BOOL CFolder::LoadFolder(CFolderTree *tree, char *name, ui32 namelen, ui64 clust
 				ULONG msresult = IsReparseTagMicrosoft(reparseInfo->ReparseTag);
 				if (msresult) {
 					switch (reparseInfo->ReparseTag) {
-					case 0x80000000|IO_REPARSE_TAG_SYMBOLIC_LINK:
+					case 0x80000000|IO_REPARSE_TAG_RESERVED_ZERO:
 					case IO_REPARSE_TAG_MOUNT_POINT:
 						CloseHandle(fileHandle);
 						goto nextfile;
